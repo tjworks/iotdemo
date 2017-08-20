@@ -1,0 +1,38 @@
+<html>
+<script src="https://cdn.bootcss.com/socket.io/2.0.3/socket.io.js"></script>
+<center>
+	<h1> Welcome ! </h1>
+	<h3> Touch lightbulb to turn on/off </h3>
+
+	<p> <img src="assets/off.jpg" onclick="switch(this)" width="200"> </p>
+
+
+
+</center>
+<script>
+document.open()
+for(var i in navigator){
+	//document.write(i +" = "+ navigator[i]);
+	//document.write("<br/>")
+}
+document.write("<hr>")
+for(var i in window){
+	//document.write(i +" = "+ window[i]);
+	//document.write("<br/>")
+}
+document.write(window.location.host)
+document.close();
+
+var socket = io(window.location.host);
+socket.on('news', function (data) {
+    console.log(data);
+    socket.emit('data', { 
+    						my: 'light is on' , 
+    						agent: navigator.userAgent
+    					}
+    );
+}); 
+
+</script>
+
+</html>
