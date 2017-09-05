@@ -4,3 +4,7 @@
 # Server:
     - Create server.js
     - npm install socket.io, mongodb, co
+
+
+
+# Change model, collect more data

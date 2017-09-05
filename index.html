@@ -1,38 +1,56 @@
 <html>
+<head>
 <script src="https://cdn.bootcss.com/socket.io/2.0.3/socket.io.js"></script>
+<style>img { width:200;}</style>
+
+</head>
+<body onload="pageLoaded()">
 <center>
-	<h1> Welcome ! </h1>
-	<h3> Touch lightbulb to turn on/off </h3>
-
-	<p> <img src="assets/off.jpg" onclick="switch(this)" width="200"> </p>
-
-
-
+	<h1> TJ's IoT Demo  </h1>	 
+	<h3> Touch lightbulb to turn on/off </h3>	
+	
+		<img id="light1"><img id="light2"><img id="light3">
+		<br/>
+		<img id="light4"><img id="light5"><img id="light6">
+		<br/>
+		<img id="light9"><img id="light8"><img id="light7">		
+	</p>
 </center>
+
+<img src="https://raw.githubusercontent.com/tjworks/iotdemo/master/assets/off.jpg" width=0>
+<img src="https://raw.githubusercontent.com/tjworks/iotdemo/master/assets/on.jpg" width=0>
+</body>
+
+
 <script>
-document.open()
-for(var i in navigator){
-	//document.write(i +" = "+ navigator[i]);
-	//document.write("<br/>")
-}
-document.write("<hr>")
-for(var i in window){
-	//document.write(i +" = "+ window[i]);
-	//document.write("<br/>")
-}
-document.write(window.location.host)
-document.close();
 
 var socket = io(window.location.host);
 socket.on('news', function (data) {
     console.log(data);
-    socket.emit('data', { 
-    						my: 'light is on' , 
-    						agent: navigator.userAgent
-    					}
-    );
 }); 
 
+function pageLoaded(){
+	console.log( 'ready!' );
+	
+	for(var i=1;i<=9;i++){
+		var image = document.getElementById("light"+i);
+		image.src = "https://raw.githubusercontent.com/tjworks/iotdemo/master/assets/off.jpg"
+		image.onclick=function(){
+			if(this.src.indexOf("on.jpg")>0)  this.src = this.src.replace("on.jpg","off.jpg");
+			else  this.src = this.src.replace("off.jpg","on.jpg");
+
+			var state = (this.src.indexOf("on.jpg"))>0 ?1: 0;		
+			
+			socket.emit('data', { 
+    						ts: Math.round(new Date().getTime() / 1000),
+    						light_no: this.id,
+    						state: state    						
+    					}
+    		);    		
+		}
+	}		
+};
+ 
 </script>
 
 </html>
