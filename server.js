@@ -36,11 +36,14 @@ io.on('connection', function (socket) {
 
 function create_streaming_process(db){
    
-  var streaming_cursor = db.events.aggregate([{$changeStream:{}}]);
-    while(true){
-      if(streaming_cursor.hasNext()){
-        printjson(cursor.next()); 
-      }
-      sleep(100);
-    }
+  var cursor = db.collection('events').aggregate([{$changeStream:{}}]);
+  cursor.on("data", function(d){
+    console.log("got data", d);
+  })
+    // while(true){
+    //   if(streaming_cursor.hasNext()){
+    //     console.log(streaming_cursor.next()); 
+    //   }
+    //   sleep(100);
+    // }
 }
