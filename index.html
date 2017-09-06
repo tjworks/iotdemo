@@ -6,47 +6,43 @@
 </head>
 <body onload="pageLoaded()">
 <center>
-	<h1> TJ's IoT Demo  </h1>	 
+	<h1 id="msg"> TJ's IoT Demo  </h1>	 
 	<h3> Touch lightbulb to turn on/off </h3>	
-	
-		<img id="light1"><img id="light2"><img id="light3">
+
+		<img id="light0"><img id="light1"><img id="light2">
 		<br/>
-		<img id="light4"><img id="light5"><img id="light6">
+		<img id="light3"><img id="light4"><img id="light5">
 		<br/>
-		<img id="light9"><img id="light8"><img id="light7">		
+		<img id="light6"><img id="light7"><img id="light8">		
 	</p>
 </center>
 
-<img src="https://raw.githubusercontent.com/tjworks/iotdemo/master/assets/off.jpg" width=0>
-<img src="https://raw.githubusercontent.com/tjworks/iotdemo/master/assets/on.jpg" width=0>
+<img src="https://raw.githubusercontent.com/tjworks/iotdemo/master/assets/off.jpg" style="display:none">
+<img src="https://raw.githubusercontent.com/tjworks/iotdemo/master/assets/on.jpg" style="display:none">
 </body>
 
 
 <script>
 
 var socket = io(window.location.host);
-socket.on('news', function (data) {
-    console.log(data);
+socket.on('winner', function (data) {
+    console.log("winner", data);
+    document.getElementById("msg").innerHTML = data.message
 }); 
 
 function pageLoaded(){
 	console.log( 'ready!' );
 	
-	for(var i=1;i<=9;i++){
+	for(var i=0;i<9;i++){
 		var image = document.getElementById("light"+i);
 		image.src = "https://raw.githubusercontent.com/tjworks/iotdemo/master/assets/off.jpg"
 		image.onclick=function(){
 			if(this.src.indexOf("on.jpg")>0)  this.src = this.src.replace("on.jpg","off.jpg");
 			else  this.src = this.src.replace("off.jpg","on.jpg");
 
-			var state = (this.src.indexOf("on.jpg"))>0 ?1: 0;		
-			
-			socket.emit('data', { 
-    						ts: Math.round(new Date().getTime() / 1000),
-    						light_no: this.id,
-    						state: state    						
-    					}
-    		);    		
+			var state = (this.src.indexOf("on.jpg"))>0 ?1: 0;					
+			var light_no = parseInt(this.id.replace("light",""));
+			socket.emit('data', {light_no: light_no, state: state})	
 		}
 	}		
 };

@@ -1,3 +1,5 @@
+
+
 db=db.getSiblingDB("test");
 cursor = db.mytable.aggregate([{$changeStream:{}}]);
 while(true){
