@@ -1,14 +1,11 @@
 <html>
-<head>
 <script src="https://cdn.bootcss.com/socket.io/2.0.3/socket.io.js"></script>
 <style>img { width:200;}</style>
-
-</head>
 <body onload="pageLoaded()">
-<center>
+<center id="main">
 	<h1 id="msg"> TJ's IoT Demo  </h1>	 
 	<h3> Touch lightbulb to turn on/off </h3>	
-
+	
 		<img id="light0"><img id="light1"><img id="light2">
 		<br/>
 		<img id="light3"><img id="light4"><img id="light5">
@@ -16,19 +13,10 @@
 		<img id="light6"><img id="light7"><img id="light8">		
 	</p>
 </center>
-
-<img src="https://raw.githubusercontent.com/tjworks/iotdemo/master/assets/off.jpg" style="display:none">
-<img src="https://raw.githubusercontent.com/tjworks/iotdemo/master/assets/on.jpg" style="display:none">
 </body>
 
-
 <script>
-
 var socket = io(window.location.host);
-socket.on('winner', function (data) {
-    console.log("winner", data);
-    document.getElementById("msg").innerHTML = data.message
-}); 
 
 function pageLoaded(){
 	console.log( 'ready!' );
@@ -46,7 +34,14 @@ function pageLoaded(){
 		}
 	}		
 };
+
+socket.on('winner', function (data) {
+    console.log("winner", data);
+    document.getElementById("main").innerHTML ="<h1>"+ data.message +"</h1><img src='https://raw.githubusercontent.com/tjworks/iotdemo/master/assets/on.jpg' width='600'> "
+}); 
  
 </script>
+<img src="https://raw.githubusercontent.com/tjworks/iotdemo/master/assets/off.jpg" style="display:none">
+<img src="https://raw.githubusercontent.com/tjworks/iotdemo/master/assets/on.jpg" style="display:none">
 
 </html>

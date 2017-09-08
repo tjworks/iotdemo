@@ -1,7 +1,7 @@
 const child_process = require('child_process');
 const ServerSocket =require('socket.io-client');
 
-var max = 100;
+var max = 1000;
 for(var i=1;i<=max;i++){
     var socket = ServerSocket('http://localhost:80', {forceNew:true});
     socket.cid = 100+ i;
