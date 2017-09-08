@@ -34,7 +34,6 @@ io.on('connection', function (socket) {
 });
 
 // processing real time data
-buffer = { }
 function create_streaming_process(db){   
   var cursor = db.collection('events').aggregate([
                 {$changeStream:{}}, 
